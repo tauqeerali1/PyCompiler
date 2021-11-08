@@ -1,0 +1,66 @@
+{% extends "base.html"%}
+
+{% block title %}home{% endblock %}
+
+{% block content %}
+
+{% if user.is_authenticated %}
+
+	<div class="global">
+				<h3 style="padding-right: 600px; text-align:left; color: blanchedalmond;">PyCompiler</h3>
+				<h3 style="text-align:center; color: blanchedalmond;">Welcome: {{request.user.username}}</h3>
+
+		<div class="logout" style="text-align: right; padding-left: 600px;">
+			<form id="logoutform" method="POST" action="{% url 'logout' %}">
+				{% csrf_token %}
+			</form>
+				<a href="/login" class="btn btn-success" onClick="document.getElementById('logoutform').submit()" style="font-size: 20px; width: 200px;">Logout</a>
+		</div>
+	</div><br><br><br>
+
+	<div class="container-fluid">
+		<a href="/contest" class="btn btn-success" style="font-size: 20px; width: 200px; float: right;">Contest</a>
+		<div class="row">
+		  <div class="col-sm-12 ml-5 mr-5 mt-5 mb-5">
+			<form action="/runcode" method="post">
+			  {% csrf_token %}
+			  <div class="form-group row">
+				<div class="col-sm-7 mr-5 ml-3">
+				  <label for="comment"><h4>Coding Area</h4></label>
+				  <textarea class="form-control" rows="14" name="code_area" style="border:1px solid grey; letter-spacing: 1px; font-family: 'Lucida Console'; font-size: 20px; " onkeydown="if(event.keyCode===9){var v=this.value,s=this.selectionStart,e=this.selectionEnd;this.value=v.substring(0, s)+'\t'+v.substring(e);this.selectionStart=this.selectionEnd=s+1;return false;}">{{code}}</textarea>
+				</div>
+  
+				<div class="col-sm-3">
+				  <div class="row mb-4">
+					<label for="comment"><h5>Input</h5></label>
+					<textarea class="form-control" rows="7" name="input_area" style="border:1px solid grey;">{{input}}</textarea>
+				  </div>
+				  <div class="row">
+					<label for="comment"><h5>Output</h5></label>
+					<textarea class="form-control" rows="7" name="output_area" style="border:1px solid grey;" disabled>{{output}}</textarea>
+				  </div>
+				</div>
+			  </div>
+			  <div class="form-group row">
+				<div class="col-sm-7 ml-3">
+				  <button class="btn btn-outline-success float-right" type="submit">Run Your Code </button>
+				</div>
+			  </div>
+			</form>
+  
+		  </div>
+		</div>
+	  </div>
+	  <br><br><br><br>
+
+	  {% for post in data %}
+	  <div class="question" style=" padding: 40px;">
+    	<h4 style="color: rgb(6, 32, 73);">Question- {{ post.title }}</h4>
+    	<p>{{ post.content }}</p></div>
+	{% endfor %}
+
+	<br><br>
+
+{% endif %}
+
+{% endblock %}
